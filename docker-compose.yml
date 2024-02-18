@@ -8,9 +8,34 @@ services:
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=polls
+      - POSTGRES_DB=bills
     volumes:
-      - polls_pg_data:/bitnami/postgresql
+      - bills_pg_data:/bitnami/postgresql
+    networks:
+      - db
+
+  app:
+    build: .
+    networks:
+      - db
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    environment:
+      - TOKENGENERATOR_CLIENT_ID="bd753592-cf9b-4d1a-96b9-cb8b2c01bd12"
+      - TOKENGENERATOR_CLIENT_SECRET="4e8229fe-1131-439c-9846-799895a8be5b"
+      - TOKENGENERATOR_HOSTNAME="vagas.builders"
+      - TOKENGENERATOR_PATH="/api/builders/auth/tokens"
+      - BILLINFO_HOSTNAME="vagas.builders"
+      - BILLINFO_PATH="/api/builders/bill-payments/codes"
+      - SECRET="desafio-tecnico"
+      - PORT=3000
+    command: "npm run start"
 
 volumes:
-  polls_pg_data:
+  bills_pg_data:
+
+networks:
+  db:
+    driver: bridge

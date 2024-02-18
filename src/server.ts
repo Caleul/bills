@@ -14,6 +14,6 @@ app.register(cookie, {
 
 app.register(getBill)
 
-app.listen({ port: process.env.PORT }).then(() => {
+app.listen({ port: Number(process.env.PORT) }).then(() => {
     console.log(`HTTP server running on port ${process.env.PORT}`)
 })
