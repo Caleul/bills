@@ -1,5 +1,5 @@
 
-POST http://localhost:3000/bill
+POST http://127.0.0.1:3000/bill
 Content-Type: application/json
 
 {

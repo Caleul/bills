@@ -28,7 +28,13 @@ export async function getBill(app: FastifyInstance){
 
         const parts = token.split('.')
 
-        const { due_date, amount, type } = await getBillInfo(bar_code, parts[0])        
+        const { due_date, amount, type } = await getBillInfo(bar_code, parts[0])
+
+        if (!(amount || due_date || type)) {
+            return reply.send({ 
+                message: 'Invalid barrcode',
+            }).send(400)
+        }
 
         const interest = calculateInterest(amount, dateDifferenceInDays(due_date, payment_date))
         const fine = calculateFine(amount)
@@ -41,8 +47,8 @@ export async function getBill(app: FastifyInstance){
             data: {
                 barCode: bar_code,
                 paymentDate: new Date(payment_date),
-                originalAmount: amount,
-                amount: amount + interest + fine,
+                originalAmount: Number(amount),
+                amount: Number(amount) + interest + fine,
                 dueDate: new Date(due_date),
                 interest,
                 fine,
@@ -65,8 +71,8 @@ export async function getBill(app: FastifyInstance){
         }
 
         return reply.send({
-            "original_amount": amount,
-            "amount": amount + interest + fine,
+            "original_amount": Number(amount),
+            "amount": Number(amount) + interest + fine,
             "due_date": due_date,
             "payment_date": payment_date,
             "interest_amount_calculated": interest,

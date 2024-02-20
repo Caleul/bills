@@ -1,9 +1,13 @@
 import { redis } from './redis'
 
 export async function storeTokenRedis(token: string, expires_in: string) {
-    const now = new Date()
-    const expires = new Date(expires_in)
-    const ttl = Math.round((expires.getTime() - now.getTime()) / 1000)
+    const now = Date.now()
+    const expires = new Date(expires_in).getTime()
+    var ttl = Math.round((expires - now) / 1000)
+
+    if (ttl < 0) {
+        ttl = ttl * -1
+    }
 
     await redis.set('token', token, 'EX', ttl)
 }
