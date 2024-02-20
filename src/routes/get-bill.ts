@@ -11,7 +11,7 @@ export async function getBill(app: FastifyInstance){
     app.post('/bill', async(request: FastifyRequest, reply: FastifyReply) => {
         const getBillParams = z.object({
             bar_code: z.string(),
-            payment_date: z.string(),
+            payment_date: z.string().datetime(),
         })
 
         const { bar_code, payment_date } = getBillParams.parse(request.body)
@@ -23,7 +23,7 @@ export async function getBill(app: FastifyInstance){
             ({ token, expires_in } = await getToken())
 
             storeTokenRedis(token, expires_in)
-            console.log('Foi preciso gerar um novo token')
+            console.log('Token generated')
         }
 
         const parts = token.split('.')
