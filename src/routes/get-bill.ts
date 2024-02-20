@@ -1,13 +1,14 @@
 import { z } from 'zod'
-import { FastifyInstance } from 'fastify'
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import { getToken } from '../api/get-token'
 import { getBillInfo } from '../api/bill-info'
 import { calculateInterest } from '../math/interest'
 import { calculateFine } from '../math/fine'
 import { prisma } from '../lib/prisma'
+import { getTokenRedis, storeTokenRedis } from '../lib/token'
 
 export async function getBill(app: FastifyInstance){
-    app.post('/bill', async(request, reply) => {
+    app.post('/bill', async(request: FastifyRequest, reply: FastifyReply) => {
         const getBillParams = z.object({
             bar_code: z.string(),
             payment_date: z.string(),
@@ -15,22 +16,14 @@ export async function getBill(app: FastifyInstance){
 
         const { bar_code, payment_date } = getBillParams.parse(request.body)
 
-        let { token } = request.cookies
+        let token = await getTokenRedis()
 
         if (!token) {
             let expires_in
             ({ token, expires_in } = await getToken())
 
-            const now = new Date()
-            const expires = new Date(expires_in)
-            const maxAge = Math.round((expires.getTime() - now.getTime()) / 1000)
-
-            reply.setCookie('token', token, {
-                path: '/',
-                maxAge: maxAge,
-                signed: true,
-                httpOnly: true,
-            })
+            storeTokenRedis(token, expires_in)
+            console.log('Foi preciso gerar um novo token')
         }
 
         const parts = token.split('.')
@@ -47,10 +40,10 @@ export async function getBill(app: FastifyInstance){
         await prisma.performedCalculation.create({
             data: {
                 barCode: bar_code,
-                paymentDate: payment_date,
+                paymentDate: new Date(payment_date),
                 originalAmount: amount,
                 amount: amount + interest + fine,
-                dueDate: due_date,
+                dueDate: new Date(due_date),
                 interest,
                 fine,
                 type,
@@ -61,14 +54,14 @@ export async function getBill(app: FastifyInstance){
             return reply.send({ 
                 message: 'Only NPC type bills will be calculated',
                 type
-            })
+            }).send(422)
         }
 
         if (new Date(due_date) >= new Date(payment_date)) {
             return reply.send({ 
                 message: 'This bill is not expired',
                 due_date
-            })
+            }).status(204)
         }
 
         return reply.send({
@@ -78,7 +71,7 @@ export async function getBill(app: FastifyInstance){
             "payment_date": payment_date,
             "interest_amount_calculated": interest,
             "fine_amount_calculated": fine
-        })
+        }).status(200)
     })
 }
 

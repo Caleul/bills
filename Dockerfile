@@ -2,6 +2,8 @@ FROM node:20.11.1
 
 ENV DATABASE_URL="postgresql://docker:docker@postgres:5432/bills?schema=public"
 
+ENV REDIS_PORT="redis"
+
 WORKDIR /app
 
 COPY package.json ./

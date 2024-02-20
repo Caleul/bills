@@ -1,19 +1,11 @@
-import fastify from 'fastify'
-import cookie, { FastifyCookieOptions } from '@fastify/cookie'
+import { App } from './app'
 import dotenv from 'dotenv'
 import { getBill } from './routes/get-bill'
 
 dotenv.config()
 
-const app = fastify()
+const app = new App()
 
-app.register(cookie, {
-    secret: process.env.SECRET,
-    hook: 'onRequest',
-} as FastifyCookieOptions)
+app.fastify.register(getBill)
 
-app.register(getBill)
-
-app.listen({ port: Number(process.env.PORT) }).then(() => {
-    console.log(`HTTP server running on port ${process.env.PORT}`)
-})
+app.start(Number(process.env.PORT))

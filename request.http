@@ -1,27 +1,8 @@
-POST https://vagas.builders/api/builders/auth/tokens
-Content-Type: application/json
 
-{
-    "client_id":"bd753592-cf9b-4d1a-96b9-cb8b2c01bd12",
-    "client_secret":"4e8229fe-1131-439c-9846-799895a8be5b"
-}
-
-###
-
-POST https://vagas.builders/api/builders/bill-payments/codes
-Content-Type: application/json
-Authorization: 81038370-96ff-4f19-86e5-d5ab0ba6f133
-
-{
-    "code": "34199800020104352008771020110004191070010000"
-}
-
-###
-
-POST http://localhost:3000/slip
+POST http://localhost:3000/bill
 Content-Type: application/json
 
 {
     "bar_code": "34199800020104352008771020110004191070010000",
     "payment_date": "2024-05-15"
-} 
+}
