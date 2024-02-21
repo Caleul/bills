@@ -17,9 +17,9 @@ export async function getBill(app: FastifyInstance){
         const { bar_code, payment_date } = getBillParams.parse(request.body)
 
         if (new Date(payment_date).toString() === 'Invalid Date') {
-            return reply.send({ 
-                message: 'Invalid Date',
-            }).status(400)
+            return reply.status(400).send({ 
+                message: 'Invalid date',
+            })
         }
 
         let token = await getTokenRedis()
@@ -37,9 +37,9 @@ export async function getBill(app: FastifyInstance){
         const { due_date, amount, type } = await getBillInfo(bar_code, parts[0])
 
         if (!(amount || due_date || type)) {
-            return reply.send({ 
+            return reply.status(400).send({ 
                 message: 'Invalid barrcode',
-            }).status(400)
+            })
         }
 
         const interest = calculateInterest(amount, dateDifferenceInDays(due_date, payment_date))
@@ -63,17 +63,17 @@ export async function getBill(app: FastifyInstance){
         })
         
         if (type != 'NPC') {
-            return reply.send({ 
+            return reply.status(422).send({ 
                 message: 'Only NPC type bills will be calculated',
                 type
-            }).status(422)
+            })
         }
 
         if (new Date(due_date) >= new Date(payment_date)) {
-            return reply.send({ 
+            return reply.status(422).send({ 
                 message: 'This bill is not expired',
                 due_date
-            }).status(204)
+            })
         }
 
         return reply.send({
