@@ -1,8 +1,38 @@
 
-POST http://127.0.0.1:3000/bill
+POST http://localhost:3000/bill
+Content-Type: application/json
+
+{
+    "bar_code": "34191790010104351004791020150008291070026000",
+    "payment_date": "2020-05-15"
+}
+
+###
+
+POST http://localhost:3000/bill
+Content-Type: application/json
+
+{
+    "bar_code": "34191790010104351004791020150008191070069000",
+    "payment_date": "2024-05-15"
+}
+
+###
+
+POST http://localhost:3000/bill
 Content-Type: application/json
 
 {
     "bar_code": "34199800020104352008771020110004191070010000",
+    "payment_date": "2024-05-15"
+}
+
+###
+
+POST http://localhost:3000/bill
+Content-Type: application/json
+
+{
+    "bar_code": "34197650070104357008271020110004991070040000",
     "payment_date": "2024-05-15"
 }
