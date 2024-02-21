@@ -2,15 +2,15 @@ version: '3.8'
 
 services:
   postgres:
-    image: bitnami/postgresql:16.2.0
+    image: postgres:14-alpine
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=bills
     volumes:
-      - bills_pg_data:/bitnami/postgresql
+      - bills_pg_data:/var/lib/postgresql/data
     networks:
       - db
 
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - 3000:3000
     depends_on:
       - postgres
       - redis
@@ -38,13 +38,13 @@ services:
       - db
 
   redis:
-    image: bitnami/redis:7.2.4
+    image: redis:6-alpine
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - 6379:6379
     volumes:
-      - 'bills_redis_data:/bitnami/redis/data'
+      - bills_redis_data:/data
     networks:
       - db
 

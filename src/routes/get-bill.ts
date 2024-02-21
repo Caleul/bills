@@ -11,10 +11,16 @@ export async function getBill(app: FastifyInstance){
     app.post('/bill', async(request: FastifyRequest, reply: FastifyReply) => {
         const getBillParams = z.object({
             bar_code: z.string(),
-            payment_date: z.string().datetime(),
+            payment_date: z.string(),
         })
 
         const { bar_code, payment_date } = getBillParams.parse(request.body)
+
+        if (new Date(payment_date).toString() === 'Invalid Date') {
+            return reply.send({ 
+                message: 'Invalid Date',
+            }).status(400)
+        }
 
         let token = await getTokenRedis()
 
@@ -33,7 +39,7 @@ export async function getBill(app: FastifyInstance){
         if (!(amount || due_date || type)) {
             return reply.send({ 
                 message: 'Invalid barrcode',
-            }).send(400)
+            }).status(400)
         }
 
         const interest = calculateInterest(amount, dateDifferenceInDays(due_date, payment_date))
@@ -60,7 +66,7 @@ export async function getBill(app: FastifyInstance){
             return reply.send({ 
                 message: 'Only NPC type bills will be calculated',
                 type
-            }).send(422)
+            }).status(422)
         }
 
         if (new Date(due_date) >= new Date(payment_date)) {
