@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:14-alpine
+    image: bitnami/postgresql:16.2.0
     ports:
       - 5432:5432
     environment:
@@ -10,48 +10,17 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=bills
     volumes:
-      - bills_pg_data:/var/lib/postgresql/data
-    networks:
-      - db
-
-  app:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      - TOKENGENERATOR_CLIENT_ID=bd753592-cf9b-4d1a-96b9-cb8b2c01bd12
-      - TOKENGENERATOR_CLIENT_SECRET=4e8229fe-1131-439c-9846-799895a8be5b
-      - TOKENGENERATOR_HOSTNAME=vagas.builders
-      - TOKENGENERATOR_PATH=/api/builders/auth/tokens
-      - BILLINFO_HOSTNAME=vagas.builders
-      - BILLINFO_PATH=/api/builders/bill-payments/codes
-      - SECRET=desafio-tecnico
-      - PORT=3000
-      - DATABASE_URL=postgresql://docker:docker@postgres:5432/bills?schema=public
-      - REDIS_PORT=redis
-    networks:
-      - db
+      - bills_pg_data:/bitnami/postgresql
 
   redis:
-    image: redis:6-alpine
+    image: bitnami/redis:7.2.4
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - 6379:6379
     volumes:
-      - bills_redis_data:/data
-    networks:
-      - db
+      - bills_redis_data:/bitnami/redis/data
 
 volumes:
   bills_pg_data:
   bills_redis_data:
-
-networks:
-  db:
-    driver: bridge
