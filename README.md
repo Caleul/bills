@@ -91,12 +91,14 @@ Para testar as funcionalidades, você pode:
 
 ### Postman
 Para executar os testes com Postman, um arquivo com a coleção foi deixado na reaiz do repositório 'Bills API.postman_collection.json'
-Basta importar no seu Postman essa coleção e executar os testes
+Basta importar no seu Postman essa coleção, criar as variáveis de coleção 'baseUrl' e 'basePort', como 'http://localhost' e '3000' respectivamente, e executar os testes
 
 ### REST Client no Visual Studio Code
 Para testar com o REST Cliente diretamente do Visual Studio Code basta abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
 
 ![image](https://github.com/Caleul/bills/assets/50340360/c712d809-3e2b-429f-a765-b4417fe85aab)
+
+Foi deixado no arquivo 'request.http' 4 testes, um para cada código de barras fornecido pelo desafio
 
 ### Jest
 Para executar os testes com Jest inicie o serviço e execute
