@@ -14,6 +14,17 @@ export async function getBill(app: FastifyInstance){
             payment_date: z.string(),
         })
 
+        const { body } = request
+        const allowedParams = ['bar_code', 'payment_date']
+
+        for (const params in body) {
+            if (!allowedParams.includes(params)) { 
+                return reply.status(422).send({ 
+                    message: 'Invalid parameter(s) sent',
+                })
+            }
+        }
+
         const { bar_code, payment_date } = getBillParams.parse(request.body)
 
         if (new Date(payment_date).toString() === 'Invalid Date') {
