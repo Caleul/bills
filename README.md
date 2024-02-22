@@ -1,4 +1,4 @@
-# Slip API
+# Bills API
 
 ## Descrição
 
@@ -11,12 +11,20 @@ Node.js: Backend do sistema
 PostgreSQL: Banco de dados
 Docker: Contêinerização
 Prisma: ORM
+Redis: Armazenamento de token para consumo de API externa
+
+## Recursos
+
+- Cálculo automático de juros e multas.
+- Exibição de informações sobre o boleto, como valor original, data de vencimento e tipo de boleto.
+- Tratamento de erros de forma amigável.
+- Armazenamento dos cálculos realizados em um banco de dados para análise posterior.
 
 ## Forma de funcionamento
 
-- Métodos HTTP para gerenciamento de requisições de boletos
+- Método HTTP para gerenciamento de requisições de boletos
 - Módulo HTTPS para consumir APIs de terceiros
-- Cache com Fastify para armazenar token de acesso
+- Cache com Redis para armazenar token de acesso à API externas
 - Dados armazenados no PostgreSQL
 
 ## Para executar o projeto localmente
@@ -32,9 +40,11 @@ npm install
 ```
 
 ### Crie o arquivo de configuração do banco de dados:
-Edite o arquivo .env e configure as credenciais do banco de dados.
+Edite o arquivo .env e configure as credenciais do PostgreSQL, Redis e porta de execução.
 ```
-DATABASE_URL="postgresql://docker:docker@localhost:5432/polls?schema=public"
+DATABASE_URL="postgresql://docker:docker@localhost:5432/bills?schema=public"
+REDIS_PORT="localhost"
+PORT=3000
 ```
 
 Crie também as demais configurações necessárias
@@ -45,8 +55,6 @@ TOKENGENERATOR_HOSTNAME
 TOKENGENERATOR_PATH
 BILLINFO_HOSTNAME
 BILLINFO_PATH
-SECRET
-PORT
 ```
 
 ### Inicie os containers
@@ -65,9 +73,33 @@ npx prisma migrate dev
 npm run dev
 ```
 
-## Recursos
+## Pronto!
+Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill'.
 
-- Cálculo automático de juros e multas.
-- Exibição de informações sobre o boleto, como valor original, data de vencimento e tipo de boleto.
-- Tratamento de erros de forma amigável.
-- Armazenamento dos cálculos realizados em um banco de dados para análise posterior.
+Para testar as funcionalidades, você pode:
+- Utilizar um cliente HTTP, como Postman
+- Utilizar a extensão "REST Client" no seu Visual Studio Code.
+- Testar com Jest
+
+### Postman
+
+### REST Client no Visual Studio Code
+Para testar com o REST Cliente diretamente do Visual Studio Code basta abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
+
+![image](https://github.com/Caleul/bills/assets/50340360/c712d809-3e2b-429f-a765-b4417fe85aab)
+
+### Jest
+Para executar os testes com Jest inicie o serviço e execute
+```
+npm run test
+```
+
+Foram configurados 3 testes:
+
+- Fine: Para verificar se a multa está sendo corretamente calculada
+- Interest: Para verificar se o juros está sendo corretamente calculado
+- Server: Para verificar se o servidor está funcionando corretamente, além de testar:
+  - Se o código de barras é valido
+  - Se a data é válida
+  - Se o tipo do boleto é válido
+  - Se a data de pagamento está em atraso
