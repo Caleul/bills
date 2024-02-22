@@ -7,7 +7,7 @@ O sistema permitirá que os usuários digitem o código de barras de um boleto e
 
 O sistema verifica dados de boletos bancários e armazena requisições na base de dados
 
-Node.js: Backend do sistema
+Node.js: Backend do sistema, com Fastify e Zod
 PostgreSQL: Banco de dados
 Docker: Contêinerização
 Prisma: ORM
