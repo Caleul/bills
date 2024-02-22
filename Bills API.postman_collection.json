@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "38547369-f64b-4e75-ae7a-dd0a7200a535",
+		"name": "Bills API",
+		"description": "This collection contains a single endpoint to interact with the billing API (Bill API), which allows you to retrieve interest and fine data for a specific bill.\n\nHow to use:\n\n- Make sure you have access to the Bill API.\n- Import this collection into your Postman environment.\n    \n\nAvailable Endpoint:\n\n- '/bill' - Endpoint to obtain interest and fine data on a specific bill.\n    \n\nComments:\n\nThe request must be made using the HTTP POST method.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18334981"
+	},
+	"item": [
+		{
+			"name": "'/bill' route",
+			"item": [
+				{
+					"name": "Bill request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar todas as informações corretas\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('original_amount');\r",
+									"    pm.response.to.have.jsonBody('amount');\r",
+									"    pm.response.to.have.jsonBody('due_date');\r",
+									"    pm.response.to.have.jsonBody('payment_date');\r",
+									"    pm.response.to.have.jsonBody('interest_amount_calculated');\r",
+									"    pm.response.to.have.jsonBody('fine_amount_calculated');\r",
+									"\r",
+									"    const { original_amount, amount, due_date, payment_date, interest_amount_calculated, fine_amount_calculated } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(original_amount).to.be.a('number');\r",
+									"    pm.expect(amount).to.be.a('number');\r",
+									"    pm.expect(due_date).to.be.a('string');\r",
+									"    pm.expect(payment_date).to.be.a('string');\r",
+									"    pm.expect(interest_amount_calculated).to.be.a('number');\r",
+									"    pm.expect(fine_amount_calculated).to.be.a('number');\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"34199800020104352008771020110004191070010000\",\r\n    \"payment_date\": \"2025-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill require with payment date before the due date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar data de pagamento anterior à data de vencimento\", () => {\r",
+									"    pm.response.to.have.status(422);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('message');\r",
+									"\r",
+									"    const { message } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(message).to.equal(\"This bill is not expired\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"34191790010104351004791020150008291070026000\",\r\n    \"payment_date\": \"2015-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill require with bill type other than NFC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar data de pagamento anterior à data de vencimento\", () => {\r",
+									"    pm.response.to.have.status(422);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('message');\r",
+									"\r",
+									"    const { message } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(message).to.equal(\"Only NPC type bills will be calculated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"34197650070104357008271020110004991070040000\",\r\n    \"payment_date\": \"2025-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill request with wrong type parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar tipo de dado incorreto\", () => {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": 34191790010104351004791020150008291070026000,\r\n    \"payment_date\": \"2025-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill request with invalid barrcode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar código de barras inválido\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('message');\r",
+									"\r",
+									"    const { message } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(message).to.equal(\"Invalid barrcode\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"123456789012345678901234567890\",\r\n    \"payment_date\": \"2025-01-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill request with parameters not required",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar parâmetros não requeridos\", () => {\r",
+									"    pm.response.to.have.status(422);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('message');\r",
+									"\r",
+									"    const { message } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(message).to.equal(\"Invalid parameter(s) sent\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"123456789012345678901234567890\",\r\n    \"payment_date\": \"2025-01-01\",\r\n    \"discount_percentage\": \"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill request with invalid date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Enviar valor de data inválido\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    \r",
+									"    pm.response.to.have.jsonBody('message');\r",
+									"\r",
+									"    const { message } = pm.response.json();\r",
+									"\r",
+									"    pm.expect(message).to.equal(\"Invalid date\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"123456789012345678901234567890\",\r\n    \"payment_date\": \"2025-40-40\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bill request with missing parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Não enviar parâmetros requeridos\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bar_code\": \"34191790010104351004791020150008291070026000\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}/bill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}",
+							"path": [
+								"bill"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Folder to test '/bill' route"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "basePort",
+			"value": "3000",
+			"type": "string"
+		}
+	]
+}
