@@ -12,10 +12,12 @@ PostgreSQL: Banco de dados
 Docker: Contêinerização
 Prisma: ORM
 Redis: Armazenamento de token para consumo de API externa
+Jest: Testes unitários
+Postman: Collection para teste de integração
 
-### Recursos
+### Recursos ao cliente
 
-- Cálculo automático de juros e multas.
+- Cálculo automático de juros compostos e multas.
 - Exibição de informações sobre o boleto, como valor original, data de vencimento e tipo de boleto.
 - Tratamento de erros de forma amigável.
 - Armazenamento dos cálculos realizados em um banco de dados para análise posterior.
@@ -67,6 +69,7 @@ docker-compose up -d
 ```
 
 ### Execute o prisma:
+Essa etapa deve ser feita para que o prisma crie na base PostgreSQL a tabela que irá armazenar as requisições
 ```
 npx prisma migrate dev
 ```
@@ -77,7 +80,7 @@ npm run dev
 ```
 
 ### Pronto!
-Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill' pela porta configurada em '.env' PORT.
+Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill' pela porta configurada em 'PORT' no arquivo '.env'.
 
 # Testar
 
@@ -89,18 +92,21 @@ Para testar as funcionalidades, você pode:
 - Utilizar a extensão "REST Client" no seu Visual Studio Code.
 - Testar com Jest
 
-### Postman
-Para executar os testes com Postman, um arquivo com a coleção foi deixado na reaiz do repositório 'Bills API.postman_collection.json'
-Basta importar no seu Postman essa coleção, criar as variáveis de coleção 'baseUrl' e 'basePort', como 'http://localhost' e '3000' respectivamente, e executar os testes
+## Postman
+Para executar os testes com Postman, um arquivo com a coleção foi deixado na reaiz do repositório 'Bills API.postman_collection.json'.
 
-### REST Client no Visual Studio Code
-Para testar com o REST Cliente diretamente do Visual Studio Code basta abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
+1. Importe no Postman a coleção 'Bills API'
+2. Crie variáveis de coleção 'baseUrl' e 'basePort' como 'http://localhost' e '3000' respectivamente
+3. execute os testes
+
+## REST Client no Visual Studio Code
+Para testar com o REST Client diretamente do Visual Studio Code basta instalar a extensão 'REST Cliente', abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
 
 ![image](https://github.com/Caleul/bills/assets/50340360/c712d809-3e2b-429f-a765-b4417fe85aab)
 
 Foi deixado no arquivo 'request.http' 4 testes, um para cada código de barras fornecido pelo desafio
 
-### Jest
+## Jest
 Para executar os testes com Jest inicie o serviço e execute
 ```
 npm run test
@@ -115,4 +121,5 @@ Foram configurados 3 testes com o Jest:
   - Se a data é válida
   - Se o tipo do boleto é válido
   - Se a data de pagamento está em atraso
+  - ATENÇÂO: O teste de integração com Postman tem maior abrangência
  
