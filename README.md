@@ -1,6 +1,6 @@
 # Bills API
 
-## Descrição
+### Descrição
 
 Este projeto visa desenvolver um sistema para calcular automaticamente os valores de juros e multas de boletos vencidos.
 O sistema permitirá que os usuários digitem o código de barras de um boleto e recebam as informações sobre os valores devidos.
@@ -13,21 +13,21 @@ Docker: Contêinerização
 Prisma: ORM
 Redis: Armazenamento de token para consumo de API externa
 
-## Recursos
+### Recursos
 
 - Cálculo automático de juros e multas.
 - Exibição de informações sobre o boleto, como valor original, data de vencimento e tipo de boleto.
 - Tratamento de erros de forma amigável.
 - Armazenamento dos cálculos realizados em um banco de dados para análise posterior.
 
-## Forma de funcionamento
+### Funcionamento
 
 - Método HTTP para gerenciamento de requisições de boletos
 - Módulo HTTPS para consumir APIs de terceiros
 - Cache com Redis para armazenar token de acesso à API externas
 - Dados armazenados no PostgreSQL
 
-## Para executar o projeto localmente
+# Para executar o projeto localmente
 
 ### Clone o repositório:
 ```
@@ -73,8 +73,10 @@ npx prisma migrate dev
 npm run dev
 ```
 
-## Pronto!
-Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill'.
+### Pronto!
+Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill' pela porta configurada em '.env' PORT.
+
+# Testar
 
 Para testar as funcionalidades, você pode:
 - Utilizar um cliente HTTP, como Postman
