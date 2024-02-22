@@ -1,9 +1,11 @@
 import axios from 'axios'
+import dotenv from 'dotenv'
 
 describe("Bills API", () => {
+    dotenv.config()
     it("Should efective receive a bill info", async () => {
         const response = await axios.post(
-            'http://localhost:3000/bill',
+            `http://localhost:${process.env.PORT}/bill`,
             {
                 "bar_code": "34199800020104352008771020110004191070010000",
                 "payment_date": "2024-05-15"
@@ -21,7 +23,7 @@ describe("Bills API", () => {
 
     it("Should return an invalid barrcode error", async () => {
         const response = await axios.post(
-            'http://localhost:3000/bill',
+            `http://localhost:${process.env.PORT}/bill`,
             {
                 "bar_code": "1122",
                 "payment_date": "2024-05-15"
@@ -34,7 +36,7 @@ describe("Bills API", () => {
 
     it("Should return an invalid date error", async () => {
         const response = await axios.post(
-            'http://localhost:3000/bill',
+            `http://localhost:${process.env.PORT}/bill`,
             {
                 "bar_code": "34199800020104352008771020110004191070010000",
                 "payment_date": "2024-40-40"
@@ -47,7 +49,7 @@ describe("Bills API", () => {
 
     it("Should return an invalid type message", async () => {
         const response = await axios.post(
-            'http://localhost:3000/bill',
+            `http://localhost:${process.env.PORT}/bill`,
             {
                 "bar_code": "34197650070104357008271020110004991070040000",
                 "payment_date": "2024-01-01"
@@ -61,7 +63,7 @@ describe("Bills API", () => {
 
     it("Should return an invalid payment date message", async () => {
         const response = await axios.post(
-            'http://localhost:3000/bill',
+            `http://localhost:${process.env.PORT}/bill`,
             {
                 "bar_code": "34191790010104351004791020150008291070026000",
                 "payment_date": "2020-01-01"
