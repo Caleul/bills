@@ -59,7 +59,7 @@ describe("Bills API", () => {
         expect(response.data).toHaveProperty("type")        
     })
 
-    it("Should return an invalid type message", async () => {
+    it("Should return an invalid payment date message", async () => {
         const response = await axios.post(
             'http://localhost:3000/bill',
             {
