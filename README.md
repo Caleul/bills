@@ -27,6 +27,9 @@ Redis: Armazenamento de token para consumo de API externa
 - Cache com Redis para armazenar token de acesso à API externas
 - Dados armazenados no PostgreSQL
 
+![image](https://github.com/Caleul/bills/assets/50340360/22786dd5-49b5-4122-8e2d-1564cfced1e5)
+
+
 # Para executar o projeto localmente
 
 ### Clone o repositório:
@@ -78,12 +81,17 @@ Isso iniciará o serviço localmente, pronto para receber requisições HTTP do 
 
 # Testar
 
+Como foi requerido pelo desafio, a ferramenta principal para executar testes de integração foi o Postman.
+Por isso, ela é a com maior abrangência nas validações
+
 Para testar as funcionalidades, você pode:
 - Utilizar um cliente HTTP, como Postman
 - Utilizar a extensão "REST Client" no seu Visual Studio Code.
 - Testar com Jest
 
 ### Postman
+Para executar os testes com Postman, um arquivo com a coleção foi deixado na reaiz do repositório 'Bills API.postman_collection.json'
+Basta importar no seu Postman essa coleção e executar os testes
 
 ### REST Client no Visual Studio Code
 Para testar com o REST Cliente diretamente do Visual Studio Code basta abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
@@ -96,12 +104,13 @@ Para executar os testes com Jest inicie o serviço e execute
 npm run test
 ```
 
-Foram configurados 3 testes:
+Foram configurados 3 testes com o Jest:
 
-- Fine: Para verificar se a multa está sendo corretamente calculada
-- Interest: Para verificar se o juros está sendo corretamente calculado
-- Server: Para verificar se o servidor está funcionando corretamente, além de testar:
+- Unitário - Fine: Para verificar se a multa está sendo corretamente calculada
+- Unitário - Interest: Para verificar se o juros está sendo corretamente calculado
+- Integração - Server: Para verificar se o servidor está funcionando corretamente, além de testar: 
   - Se o código de barras é valido
   - Se a data é válida
   - Se o tipo do boleto é válido
   - Se a data de pagamento está em atraso
+ 
