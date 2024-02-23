@@ -77,11 +77,11 @@
 									"pm.test(\"Enviar data de pagamento anterior à data de vencimento\", () => {\r",
 									"    pm.response.to.have.status(422);\r",
 									"    \r",
-									"    pm.response.to.have.jsonBody('message');\r",
+									"    pm.response.to.have.jsonBody('errors');\r",
 									"\r",
-									"    const { message } = pm.response.json();\r",
+									"    const { errors } = pm.response.json();\r",
 									"\r",
-									"    pm.expect(message).to.equal(\"This bill is not expired\");\r",
+									"    pm.expect(errors[0].message).to.equal(\"This bill is not expired\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -123,11 +123,11 @@
 									"pm.test(\"Enviar data de pagamento anterior à data de vencimento\", () => {\r",
 									"    pm.response.to.have.status(422);\r",
 									"    \r",
-									"    pm.response.to.have.jsonBody('message');\r",
+									"    pm.response.to.have.jsonBody('errors');\r",
 									"\r",
-									"    const { message } = pm.response.json();\r",
+									"    const { errors } = pm.response.json();\r",
 									"\r",
-									"    pm.expect(message).to.equal(\"Only NPC type bills will be calculated\");\r",
+									"    pm.expect(errors[0].message).to.equal(\"Only NPC type bills will be calculated\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -167,7 +167,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Enviar tipo de dado incorreto\", () => {\r",
-									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.have.status(422);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -209,11 +209,11 @@
 									"pm.test(\"Enviar código de barras inválido\", () => {\r",
 									"    pm.response.to.have.status(400);\r",
 									"    \r",
-									"    pm.response.to.have.jsonBody('message');\r",
+									"    pm.response.to.have.jsonBody('errors');\r",
 									"\r",
-									"    const { message } = pm.response.json();\r",
+									"    const { errors } = pm.response.json();\r",
 									"\r",
-									"    pm.expect(message).to.equal(\"Invalid barrcode\");\r",
+									"    pm.expect(errors[0].message).to.equal(\"Invalid barrcode\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -255,11 +255,11 @@
 									"pm.test(\"Enviar parâmetros não requeridos\", () => {\r",
 									"    pm.response.to.have.status(422);\r",
 									"    \r",
-									"    pm.response.to.have.jsonBody('message');\r",
+									"    pm.response.to.have.jsonBody('errors');\r",
 									"\r",
-									"    const { message } = pm.response.json();\r",
+									"    const { errors } = pm.response.json();\r",
 									"\r",
-									"    pm.expect(message).to.equal(\"Invalid parameter(s) sent\");\r",
+									"    pm.expect(errors[0].message).to.equal(\"Invalid parameter(s) sent\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -301,11 +301,11 @@
 									"pm.test(\"Enviar valor de data inválido\", () => {\r",
 									"    pm.response.to.have.status(400);\r",
 									"    \r",
-									"    pm.response.to.have.jsonBody('message');\r",
+									"    pm.response.to.have.jsonBody('errors');\r",
 									"\r",
-									"    const { message } = pm.response.json();\r",
+									"    const { errors } = pm.response.json();\r",
 									"\r",
-									"    pm.expect(message).to.equal(\"Invalid date\");\r",
+									"    pm.expect(errors[0].message).to.equal(\"Invalid date\");\r",
 									"});"
 								],
 								"type": "text/javascript"
