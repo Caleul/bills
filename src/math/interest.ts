@@ -3,5 +3,5 @@ export function calculateInterest(originalAmount: number, dateDiffInDays: number
         return 0
     }
     const totalFees = (originalAmount * (Math.pow(1.00033, dateDiffInDays))) - originalAmount
-    return totalFees
+    return Number(totalFees.toFixed(2))
 }

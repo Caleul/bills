@@ -3,5 +3,5 @@ export function calculateFine(originalAmount: number): number {
         return 0
     }
     const totalFine = 0.02 * originalAmount
-    return totalFine
+    return Number(totalFine.toFixed(2))
 }
