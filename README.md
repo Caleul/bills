@@ -3,7 +3,6 @@
 ### Descrição
 
 Este projeto visa desenvolver um sistema para calcular automaticamente os valores de juros e multas de boletos vencidos.
-O sistema permitirá que os usuários digitem o código de barras de um boleto e recebam as informações sobre os valores devidos.
 
 O sistema verifica dados de boletos bancários e armazena requisições na base de dados
 
@@ -37,7 +36,7 @@ O sistema verifica dados de boletos bancários e armazena requisições na base 
 
 ### Clone o repositório:
 ```
-git clone https://github.com/caleul/slips.git
+git clone https://github.com/caleul/bills.git
 ```
 
 ### Instale as dependências:
@@ -83,39 +82,40 @@ npm run dev
 ### Pronto!
 Isso iniciará o serviço localmente, pronto para receber requisições HTTP do tipo POST na rota '/bill' pela porta configurada em 'PORT' no arquivo '.env'.
 
-# Testar
 
-Como foi requerido pelo desafio, a ferramenta principal para executar testes de integração foi o Postman.
-Por isso, ela é a com maior abrangência nas validações
+# Testes
 
-Para testar as funcionalidades, você pode:
+Para testar as funcionalidades:
 - Utilizar um client HTTP, como Postman
 - Utilizar a extensão "REST Client" no seu Visual Studio Code.
 - Testar com Jest
 
 ## Postman
+Postman foi usado como principal ferramenta para testes de integração com endpoint desenvolvido!
+
 Para executar os testes com Postman, um arquivo com a coleção foi deixado na reaiz do repositório 'Bills API.postman_collection.json'.
+Nele, existe uma pasta com requisições pre-estabelecidadas abrangendo uma grande variedade de cenários
 
 1. Importe no Postman a coleção 'Bills API'
 2. Crie variáveis de coleção 'baseUrl' e 'basePort' como 'http://localhost' e '3000' respectivamente
-3. execute os testes
+3. Execute os testes
 
 ## REST Client no Visual Studio Code
 Para testar com o REST Client diretamente do Visual Studio Code basta instalar a extensão 'REST Cliente', abrir o arquivo 'request.http' e clicar em 'Send Request' acima de cada método
 
 ![image](https://github.com/Caleul/bills/assets/50340360/c712d809-3e2b-429f-a765-b4417fe85aab)
 
-Foi deixado no arquivo 'request.http' 4 testes, um para cada código de barras fornecido pelo desafio
+Foi deixado no arquivo 'request.http' 4 testes, um para cada código de barras fornecido pelo desafio.
+Como não foi a principal ferramente de teste, não possui grande abrangência de cenários, mas serve para testes rápidos sem sair do Visual Studio Code
 
 ## Jest
-Para executar os testes com Jest inicie o serviço e execute
-```
-npm run test
-```
-
-Foram configurados 3 testes unitários com o Jest:
+Jest foi usado para criar testes unitários, validando diversos cenários para as funções individuais do sistema:
 
 - Fine: Para verificar se a multa está sendo corretamente calculada
 - Interest: Para verificar se o juros está sendo corretamente calculado
 - Date Difference: Para verificar se a diferença de dias entre as datas está sendo corretamente calculada
- 
+
+Para executar os testes com Jest basta executar
+```
+npm run test
+``` 
