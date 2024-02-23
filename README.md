@@ -89,7 +89,7 @@ Como foi requerido pelo desafio, a ferramenta principal para executar testes de 
 Por isso, ela é a com maior abrangência nas validações
 
 Para testar as funcionalidades, você pode:
-- Utilizar um cliente HTTP, como Postman
+- Utilizar um client HTTP, como Postman
 - Utilizar a extensão "REST Client" no seu Visual Studio Code.
 - Testar com Jest
 
@@ -113,14 +113,9 @@ Para executar os testes com Jest inicie o serviço e execute
 npm run test
 ```
 
-Foram configurados 3 testes com o Jest:
+Foram configurados 3 testes unitários com o Jest:
 
-- Unitário - Fine: Para verificar se a multa está sendo corretamente calculada
-- Unitário - Interest: Para verificar se o juros está sendo corretamente calculado
-- Integração - Server: Para verificar se o servidor está funcionando corretamente, além de testar: 
-  - Se o código de barras é valido
-  - Se a data é válida
-  - Se o tipo do boleto é válido
-  - Se a data de pagamento está em atraso
-  - ATENÇÂO: O teste de integração com Postman tem maior abrangência
+- Fine: Para verificar se a multa está sendo corretamente calculada
+- Interest: Para verificar se o juros está sendo corretamente calculado
+- Date Difference: Para verificar se a diferença de dias entre as datas está sendo corretamente calculada
  
