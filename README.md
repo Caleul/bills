@@ -6,14 +6,13 @@ Este projeto visa desenvolver um sistema para calcular automaticamente os valore
 
 O sistema verifica dados de boletos bancários e armazena requisições na base de dados
 
-- Node.js: Backend do sistema, com Fastify e Zod
+- Node.js: Backend do sistema, com TypeScript, Fastify e Zod
 - PostgreSQL: Banco de dados
 - Docker: Contêinerização
 - Prisma: ORM
 - Redis: Armazenamento de token para consumo de API externa
 - Jest: Testes unitários
 - Postman: Collection para teste de integração
-- Docker: Serviço de containers
 
 ### Recursos ao cliente
 
@@ -32,12 +31,13 @@ O sistema verifica dados de boletos bancários e armazena requisições na base 
 ![image](https://github.com/Caleul/bills/assets/50340360/22786dd5-49b5-4122-8e2d-1564cfced1e5)
 
 
-# Para executar o projeto localmente
+# Executar o projeto
 
 ### Clone o repositório:
 ```
 git clone https://github.com/caleul/bills.git
 ```
+E entre na pasta 'bills' criada
 
 ### Instale as dependências:
 ```
